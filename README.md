@@ -54,6 +54,7 @@ size_t count_instructions( mba_t* mba ) {
 If you're using Visual Studio:
 
 1) Add a new environment variable using `SystemPropertiesAdvanced.exe` like so `IDA_PATH = S:\IDA Pro\`.
+1) Unpack the SDK into `%IDA_PATH%sdk`.
 2) Add the `HexSuite.vcxproj` into your solution by using `Solution > Add > Existing Project`.
 3) Right click on the References tab of the dynamic library (which will be your plugin) and add a reference to HexSuite.
 4) Profit.
