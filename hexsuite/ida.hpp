@@ -21,7 +21,7 @@
 //
 namespace hex
 {
-	inline til_t* local_type_lib() { return get_idati(); }
+	inline const til_t* local_type_lib() { return get_idati(); }
 
 	template<typename Plugin>
 	constexpr auto init = +[ ] () -> plugmod_t* { return new Plugin{}; };
