@@ -1,4 +1,5 @@
 #pragma once
+#include <span>
 #include "ida.hpp"
 
 // Lambda wrappers around common optimizer types.
@@ -12,6 +13,24 @@ namespace hex
 		virtual void set_state( bool enable ) = 0;
 		void install() { set_state( true ); }
 		void uninstall() { set_state( true ); }
+	};
+
+	// Component list type.
+	//
+	struct component_list
+	{
+		std::span<component* const> list;
+		bool state;
+		constexpr component_list( std::span<component* const> list, bool state = false ) : list( list ), state( state ) {}
+
+		constexpr void set_state( bool enable )
+		{
+			if ( std::exchange( state, enable ) != enable )
+				for ( auto* c : list )
+					c->set_state( enable );
+		}
+		constexpr void install() { set_state( true ); }
+		constexpr void uninstall() { set_state( false ); }
 	};
 
 	// Instruction optimizer:

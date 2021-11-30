@@ -21,5 +21,10 @@
 //
 namespace hex
 {
-	inline auto* local_type_lib() { return get_idati(); }
+	inline til_t* local_type_lib() { return get_idati(); }
+
+	template<typename Plugin>
+	constexpr auto init = +[ ] () -> plugmod_t* { return new Plugin{}; };
+	template<typename Plugin>
+	constexpr auto init_hexray = +[ ] () -> plugmod_t* { return init_hexrays_plugin() ? new Plugin{} : nullptr; };
 };
