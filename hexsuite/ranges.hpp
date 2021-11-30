@@ -22,6 +22,9 @@ namespace hex
 	//
 	namespace detail
 	{
+		template<typename T> concept HasNext = requires( T * x ) { x = x->next; };
+		template<typename T> concept HasNextb = requires( T * x ) { x = x->nextb; };
+
 		template<typename T>
 		struct list_iterator
 		{
@@ -33,8 +36,10 @@ namespace hex
 
 			// Iteration.
 			//
-			list_iterator& operator++() { at = at->next; return *this; }
-			list_iterator& operator--() { at = at->prev; return *this; }
+			list_iterator& operator++() requires HasNext<T> { at = at->next; return *this; }
+			list_iterator& operator--() requires HasNext<T> { at = at->prev; return *this; }
+			list_iterator& operator++() requires HasNextb<T> { at = at->nextb; return *this; }
+			list_iterator& operator--() requires HasNextb<T> { at = at->prevb; return *this; }
 			list_iterator operator++( int ) { auto s = *this; operator++(); return s; }
 			list_iterator operator--( int ) { auto s = *this; operator--(); return s; }
 
@@ -48,8 +53,6 @@ namespace hex
 			value_type operator*() const { return at; }
 			value_type operator->() const { return at; }
 		};
-
-
 		struct instruction_range : std::ranges::view_base
 		{
 			using iterator = list_iterator<minsn_t>;
@@ -73,14 +76,6 @@ namespace hex
 	};
 	inline auto instructions( mblock_t* blk ) { return detail::instruction_range{ .blk = blk }; }
 	inline auto basic_blocks( mba_t* mba ) { return detail::bblock_range{ .blk = mba->blocks }; }
-
-	// Operand iteration.
-	//
-	inline auto operands( minsn_t* ins )
-	{
-		return std::span( &ins->l, 3 ) |
-			    std::views::filter( [ ] ( auto* op ) { return op->t != mop_z; } );
-	}
 
 	// Type iteration.
 	//

@@ -33,14 +33,13 @@ void list_types() {
 	for ( const char* type_name : hex::named_types() )
 		msg( "%s\n", type_name );
 }
-size_t count_operands( mba_t* mba ) {
+size_t count_instructions( mba_t* mba ) {
 	size_t n = 0;
 	for ( mblock_t* blk : hex::basic_blocks( mba ) )
 	{
 		msg( "Successors = %llu\n", hex::successors( blk ).size() );
 		for ( minsn_t* ins : hex::instructions( blk ) )
-			for ( mop_t* op : hex::operands( ins ) )
-				n++;
+			n++;
 	}
 	return n;
 }
