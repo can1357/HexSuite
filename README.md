@@ -1,5 +1,4 @@
 # HexSuite
-------
 HexSuite is a header only wrapper around Hex-Rays API in C++20 designed to simplify the use of Hex-Rays and IDA APIs by modern C++ features.
 Some of the features it currently supports are as follows:
 
@@ -50,7 +49,6 @@ size_t count_instructions( mba_t* mba ) {
 
 
 ## Usage
-------
 If you're using Visual Studio:
 
 1) Add a new environment variable using `SystemPropertiesAdvanced.exe` like so `IDA_PATH = S:\IDA Pro\`.
@@ -66,5 +64,4 @@ Note that in either case you need a STL library and a compiler fully supporting 
 
 
 ## License
-------
 HexSuite is licensed under BSD-3-Clause License.
