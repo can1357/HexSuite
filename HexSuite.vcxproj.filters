@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Library Include="$(IDA_PATH)sdk\lib\x64_win_vc_64\ida.lib" />
+    <Library Include="$(IDA_PATH)sdk\lib\x64_win_vc_64\pro.lib" />
+    <Library Include="$(IDA_PATH)sdk\lib\x64_win_vc_64\network.lib" />
+    <Library Include="$(IDA_PATH)sdk\lib\x64_win_vc_64\compress.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{8f9c1bcb-8d5b-410d-84d8-e2e51f7b3633}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="hexsuite\ida.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="hexsuite.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="hexsuite\visitors.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="hexsuite\components.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="hexsuite\ranges.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="hexsuite\print.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
