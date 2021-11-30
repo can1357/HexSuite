@@ -1,8 +1,8 @@
-### HexSuite
-
-##### Header only wrapper around Hex-Rays API in C++20.
+# HexSuite
 
 ------
+
+Header only wrapper around Hex-Rays API in C++20.
 
 
 
