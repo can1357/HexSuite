@@ -4,6 +4,14 @@ Some of the features it currently supports are as follows:
 
 
 - One-click linking to Hex-Rays API using Visual Studio.
+
+- Instruction wrappers and easy memory-management under `hexsuite/architecture.hpp`:
+
+```cpp
+std::unique_ptr call = hex::make_call( cg.insn.ea, hex::helper{ intrinsic_getter }, call_info );
+std::unique_ptr adj =  hex::make_add( cg.insn.ea, { offset, 8 }, std::move( call ), hex::phys_reg( cg.insn.ops[ 0 ].reg, 8 ) );
+```
+
 - Lambda visitors under `hexsuite/visitors.hpp`:
 
 ```cpp
