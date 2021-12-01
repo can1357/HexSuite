@@ -97,6 +97,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="hexsuite.hpp" />
+    <ClInclude Include="hexsuite\architecture.hpp" />
     <ClInclude Include="hexsuite\components.hpp" />
     <ClInclude Include="hexsuite\ida.hpp" />
     <ClInclude Include="hexsuite\print.hpp" />

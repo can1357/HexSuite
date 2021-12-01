@@ -30,5 +30,8 @@
     <ClInclude Include="hexsuite\print.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="hexsuite\architecture.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
