@@ -43,7 +43,7 @@ namespace hex
 		operand( float f ) { mop_t::make_fpnum( &f, sizeof( float ) ); }
 		operand( double f ) { mop_t::make_fpnum( &f, sizeof( double ) ); }
 		// Call types.
-		operand( mcallinfo_t* c ) { mop_t::t = mop_f; mop_t::f = c; mop_t::size = c->return_type.get_size(); }
+		operand( mcallinfo_t* c ) { mop_t::t = mop_f; mop_t::f = c; mop_t::size = c->return_type.is_void() ? 0 : c->return_type.get_size(); }
 		operand( std::unique_ptr<mcallinfo_t> c ) : operand( c.release() ) {}
 
 		// Propagate from original type.
