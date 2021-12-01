@@ -67,6 +67,43 @@ namespace hex
 		}
 	};
 
+	// Creates a simple call-info.
+	//
+	struct pure_t {};
+
+	namespace detail
+	{
+		constexpr inline void push_arg( mcallinfo_t* ci ) {}
+		template<typename T, typename... Tx>
+		inline void push_arg( mcallinfo_t* ci, T&& t, Tx&&... rest ) 
+		{
+			ci->args.push_back( std::forward<T>( t ) );
+			push_arg( ci, std::forward<Tx>( rest )... );
+		}
+	};
+
+	template<typename... Tx>
+	inline std::unique_ptr<mcallinfo_t> call_info( tinfo_t ret, Tx&&... args ) 
+	{
+		auto ci = std::make_unique<mcallinfo_t>();
+		ci->cc = CM_CC_FASTCALL;
+		ci->callee = BADADDR;
+		ci->solid_args = 0;
+		ci->call_spd = 0;
+		ci->stkargs_top = 0;
+		ci->role = ROLE_UNK;
+		ci->flags = FCI_FINAL | FCI_PROP;
+		ci->return_type = ret;
+		detail::push_arg( ci.get(), std::forward<Tx>( args )... );
+		return ci;
+	}
+	template<typename... Tx>
+	inline std::unique_ptr<mcallinfo_t> call_info( pure_t, tinfo_t ret, Tx&&... args ) 
+	{
+		auto ci = call_info( ret, std::forward<Tx>( args )... );
+		ci->flags |= FCI_PURE;
+		return ci;
+	}
 	// Creates an instruction.
 	//
 	inline std::unique_ptr<minsn_t> minsn( ea_t ea, mcode_t opcode, operand l, operand r, operand d ) 
