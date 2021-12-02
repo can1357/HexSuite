@@ -38,7 +38,6 @@ namespace hex
 		operand( reg r1, reg r2 ) { mop_t::make_reg_pair( r1.r, r2.r, r1.width ); }
 		// Integral immediates.
 		operand( uint64_t i, int w ) { mop_t::make_number( i, w ); }
-		operand( int64_t i, int w ) { mop_t::make_number( ( uint64_t ) i, w ); }
 		// Floating point immediates.
 		operand( float f ) { mop_t::make_fpnum( &f, sizeof( float ) ); }
 		operand( double f ) { mop_t::make_fpnum( &f, sizeof( double ) ); }
