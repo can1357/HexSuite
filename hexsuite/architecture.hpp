@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <concepts>
 #include "ida.hpp"
 
 namespace hex
@@ -37,7 +38,10 @@ namespace hex
 		operand( reg r ) { mop_t::make_reg( r.r, r.width ); }
 		operand( reg r1, reg r2 ) { mop_t::make_reg_pair( r1.r, r2.r, r1.width ); }
 		// Integral immediates.
-		operand( uint64_t i, int w ) { mop_t::make_number( i, w ); }
+		template<std::signed_integral T>
+		operand( T i, int w ) { mop_t::make_number( ( uint64_t ) ( int64_t ) i, w ); }
+		template<std::unsigned_integral T>
+		operand( T i, int w ) { mop_t::make_number( ( uint64_t ) i, w ); }
 		// Floating point immediates.
 		operand( float f ) { mop_t::make_fpnum( &f, sizeof( float ) ); }
 		operand( double f ) { mop_t::make_fpnum( &f, sizeof( double ) ); }
