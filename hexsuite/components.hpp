@@ -107,25 +107,37 @@ namespace hex
 		template<typename T, typename... Tx>
 		inline auto fill_from( va_list a, std::type_identity<std::tuple<T, Tx...>> ) 
 		{
-			return std::tuple_cat( std::tuple{ va_arg( a, T ) }, fill_from( a, std::type_identity<std::tuple<Tx...>>{} ) );
+			std::tuple t1{ va_arg( a, T ) };
+			std::tuple t2 = fill_from( a, std::type_identity<std::tuple<Tx...>>{} );
+			return std::tuple_cat( std::move( t1 ), std::move( t2 ) );
 		}
+
+		template<typename T>
+		struct clambda_args;
+		template<typename R, typename S, typename... Tx>
+		struct clambda_args<R(S::*)(Tx...) const>
+		{
+			using type = std::tuple<Tx...>;
+		};
 		
-		template<hexrays_event_t Evt, typename... Tx>
+		template<hexrays_event_t Evt>
 		struct event_filter_gen
 		{
 			template<typename F>
 			inline constexpr auto operator()( F&& func ) const
 			{
+				using args = typename clambda_args<decltype( &F::operator() )>::type;
+
 				return hex::hexrays_callback( [f = std::forward<F>(func)](hexrays_event_t e, va_list a)->ssize_t
 				{
 					if ( e != Evt )
 						return 0;
 					else
-						return std::apply( f, fill_from( a, std::type_identity<std::tuple<Tx...>>{} ) );
+						return std::apply( f, fill_from( a, std::type_identity<args>{} ) );
 				} );
 			}
 		};
 	};
-	template<hexrays_event_t Evt, typename... Tx>
-	constexpr detail::event_filter_gen<Evt, Tx...> hexrays_callback_for = {};
+	template<hexrays_event_t Evt>
+	constexpr detail::event_filter_gen<Evt> hexrays_callback_for = {};
 };
