@@ -41,9 +41,9 @@ filter.install();
 - Vararg-less Hex-Rays callbacks:
 
 ```cpp
-hex::hexrays_callback cb = hex::hexrays_callback_for<hxe_double_click, vdui_t*, int>( [ ] ( vdui_t* ui, int k )
+hex::hexrays_callback cb = hex::hexrays_callback_for<hxe_maturity>( [ ] ( cfunc_t* cf, ctree_maturity_t mat )
 {
-	msg( "Double click %p %d!\n", ui, k );
+	msg( "Maturity changed %p %d!\n", cf, mat );
 	return 0;
 } );
 cb.install();
