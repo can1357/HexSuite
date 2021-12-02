@@ -17,7 +17,6 @@ auto ci = hex::call_info(
 auto call = hex::make_call( cg.insn.ea, hex::helper( extr ), std::move( ci ) );
 auto mov =  hex::make_mov( cg.insn.ea, std::move( call ), hex::reg( reg, 4 ) );
 ```
-
 - Lambda visitors under `hexsuite/visitors.hpp`:
 
 ```cpp
@@ -37,6 +36,17 @@ hex::microcode_filter filter = [ ] ( codegen_t& cg )
 	return false;
 };
 filter.install();
+```
+
+- Vararg-less Hex-Rays callbacks:
+
+```cpp
+hex::hexrays_callback cb = hex::hexrays_callback_for<hxe_double_click, vdui_t*, int>( [ ] ( vdui_t* ui, int k )
+{
+	msg( "Double click %p %d!\n", ui, k );
+	return 0;
+} );
+cb.install();
 ```
 
 - C++ range wrappers under `hexsuite/ranges.hpp`:
