@@ -12,7 +12,7 @@ namespace hex
 	{ 
 		virtual void set_state( bool enable ) = 0;
 		void install() { set_state( true ); }
-		void uninstall() { set_state( true ); }
+		void uninstall() { set_state( false ); }
 	};
 
 	// Component list type.
