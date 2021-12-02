@@ -43,7 +43,7 @@ namespace hex
 	namespace detail
 	{
 		template<typename F, typename... Tx>
-		concept CtreeCallableWith = requires( F && x ) { ( int ) x( std::declval<Tx>()... ); };
+		concept CtreeCallableWith = requires( F && x ) { x( std::declval<Tx>()... ); };
 	};
 	template<bool Pre, bool Post, typename F>
 	struct basic_ctree_visitor : ctree_visitor_t
