@@ -85,4 +85,47 @@ namespace hex
 		void set_state( bool enable ) override { install_microcode_filter( &storage, enable ); }
 	};
 	template<typename F> microcode_filter( F&& )->microcode_filter<F>;
+
+	// Hexrays callback.
+	//
+	template<typename F>
+	struct hexrays_callback : component
+	{
+		F functor;
+		hexrays_callback( F&& functor ) : functor( std::forward<F>( functor ) ) {}
+		static ssize_t callback( void* ud, hexrays_event_t evt, va_list va )  { return ( *( ( decltype( &functor ) ) ud ) )( evt, va ); }
+		void set_state( bool enable ) override { enable ? ( void ) install_hexrays_callback( &callback, &functor ) : ( void ) remove_hexrays_callback( &callback, &functor ); }
+	};
+	template<typename F> hexrays_callback( F&& )->hexrays_callback<F>;
+
+	namespace detail
+	{
+		inline auto fill_from( va_list a, std::type_identity<std::tuple<>> ) 
+		{
+			return std::tuple{};
+		}
+		template<typename T, typename... Tx>
+		inline auto fill_from( va_list a, std::type_identity<std::tuple<T, Tx...>> ) 
+		{
+			return std::tuple_cat( std::tuple{ va_arg( a, T ) }, fill_from( a, std::type_identity<std::tuple<Tx...>>{} ) );
+		}
+		
+		template<hexrays_event_t Evt, typename... Tx>
+		struct event_filter_gen
+		{
+			template<typename F>
+			inline constexpr auto operator()( F&& func ) const
+			{
+				return hex::hexrays_callback( [f = std::forward<F>(func)](hexrays_event_t e, va_list a)->ssize_t
+				{
+					if ( e != Evt )
+						return 0;
+					else
+						return std::apply( f, fill_from( a, std::type_identity<std::tuple<Tx...>>{} ) );
+				} );
+			}
+		};
+	};
+	template<hexrays_event_t Evt, typename... Tx>
+	constexpr detail::event_filter_gen<Evt, Tx...> hexrays_callback_for = {};
 };
