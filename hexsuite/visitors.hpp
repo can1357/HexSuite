@@ -30,7 +30,7 @@ namespace hex
 		{
 			F functor;
 			storage( F&& functor ) : functor( std::forward<F>( functor ) ) {}
-			inline int visit_minsn() override { return functor( curins ); }
+			inline int visit_minsn() { return functor( curins ); }
 		} storage;
 		minsn_visitor( F&& functor ) : storage( std::forward<F>( functor ) ) {}
 		operator minsn_visitor_t&() { return storage; }
